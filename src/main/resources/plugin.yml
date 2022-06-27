@@ -1,0 +1,24 @@
+name: Jotd
+version: '${project.version}'
+main: dev.cookie.jotd.Main
+api-version: 1.18
+authors: [ GayCookie ]
+description: Job of the Day plugin
+website: https://git.gaycookie.dev/
+depend:
+  - Jobs
+  - PlaceholderAPI
+
+permissions:
+  jotd.admin:
+    description: Administration permission for Jotd.
+    default: op
+
+  jotd.user:
+    description: User permission for Jotd (default).
+    default: true
+
+commands:
+  jotd:
+    description: Job Of the Day command.
+    usage: /<command> [args]

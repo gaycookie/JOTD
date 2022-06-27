@@ -1,0 +1,8 @@
+welcome_message:
+  enabled: true
+  message: "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost."
+boosts_amounts:
+  min: 10
+  max: 50
+excluded_jobs:
+  -
