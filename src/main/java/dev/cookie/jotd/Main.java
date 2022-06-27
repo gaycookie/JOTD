@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.MessageFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -52,7 +53,14 @@ public final class Main extends JavaPlugin {
     }
 
     public static void generateNewJotd() {
-        List<Job> jobs = Jobs.getJobs();
+        List<Job> jobs = new LinkedList<>(Jobs.getJobs());
+
+        if (config.excludedJobs().size() != 0) {
+            config.excludedJobs().forEach(jobName -> {
+                jobs.removeIf(job -> job.getName().equalsIgnoreCase(jobName));
+            });
+        }
+
         Job randomJob = jobs.get(new Random().nextInt(jobs.size()));
         int randomBoost = new Random().nextInt(config.boostsAmountMin(), config.boostsAmountMax() + 1);
 

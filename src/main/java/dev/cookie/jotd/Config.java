@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class Config {
     private File configFile;
@@ -44,5 +45,9 @@ public class Config {
 
     public int boostsAmountMax() {
         return configYml.getInt("boosts_amounts.max", 50);
+    }
+
+    public List<String> excludedJobs() {
+        return configYml.getStringList("excluded_jobs");
     }
 }
