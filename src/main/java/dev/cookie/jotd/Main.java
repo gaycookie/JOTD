@@ -55,14 +55,14 @@ public final class Main extends JavaPlugin {
     public static void generateNewJotd() {
         List<Job> jobs = new LinkedList<>(Jobs.getJobs());
 
-        if (config.excludedJobs().size() != 0) {
-            config.excludedJobs().forEach(jobName -> {
+        if (config.getExcludedJobs().size() != 0) {
+            config.getExcludedJobs().forEach(jobName -> {
                 jobs.removeIf(job -> job.getName().equalsIgnoreCase(jobName));
             });
         }
 
         Job randomJob = jobs.get(new Random().nextInt(jobs.size()));
-        int randomBoost = new Random().nextInt(config.boostsAmountMin(), config.boostsAmountMax() + 1);
+        int randomBoost = new Random().nextInt(config.getBoostsAmountMix(), config.getBoostsAmountMax() + 1);
 
         if (storage.getCurrentJob() == null) {
             storage.setCurrentJob(randomJob.getName());

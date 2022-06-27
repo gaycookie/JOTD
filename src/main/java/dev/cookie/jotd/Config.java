@@ -31,23 +31,31 @@ public class Config {
         }
     }
 
-    public boolean welcomeMessageEnabled() {
-        return configYml.getBoolean("welcome_message.enabled", false);
+    public boolean getShowWelcomeMessage() {
+        return configYml.getBoolean("show_welcome_message", false);
     }
 
-    public String welcomeMessageString() {
-        return configYml.getString("welcome_message.message", "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost.");
+    public String getWelcomeMessage() {
+        return configYml.getString("messages.welcome", "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost.");
     }
 
-    public int boostsAmountMin() {
+    public String getCurrentJobMessage() {
+        return configYml.getString("messages.current", "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost.");
+    }
+
+    public String getPreviousJobMessage() {
+        return configYml.getString("messages.previous", "§eThe previous Job of the Day was §a%jotd_previous_job% §ewith a §a%jotd_previous_job%% §eboost.");
+    }
+
+    public int getBoostsAmountMix() {
         return configYml.getInt("boosts_amounts.min", 10);
     }
 
-    public int boostsAmountMax() {
+    public int getBoostsAmountMax() {
         return configYml.getInt("boosts_amounts.max", 50);
     }
 
-    public List<String> excludedJobs() {
+    public List<String> getExcludedJobs() {
         return configYml.getStringList("excluded_jobs");
     }
 }
