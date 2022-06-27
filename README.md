@@ -11,17 +11,18 @@ This plugin must be used in combination with [Jobs Reborn] and does **not** cycl
 
 ## Permissions
 
-| Perm         | Description                                                     |
+| Permission   | Description                                                     |
 |:-------------|:----------------------------------------------------------------|
 | `jotd.admin` | Admin permissions, automatically assigned to those that are OP. |
 
 ## Commands
 
-| Command          | Perms        | Description                                 |
+| Command          | Permissions  | Description                                 |
 |:-----------------|:-------------|:--------------------------------------------| 
 | `/jotd current`  |              | Shows the current Job of the Day boost.     |
 | `/jotd generate` | `jotd.admin` | Generate a new random Job of the Day boost. |
 | `/jotd previous` |              | Shows the previous Job of the Day boost.    |
+| `/jotd reload`   | `jotd.admin` | Reload the Job of the Day plugin.           |
 
 ## Placeholders
 

@@ -4,16 +4,18 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
-import dev.cookie.jotd.cmds.MainCmd;
-import dev.cookie.jotd.cmds.MainTab;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin {
@@ -41,8 +43,8 @@ public final class Main extends JavaPlugin {
 
         new Placeholders().register();
         getServer().getPluginManager().registerEvents(new Events(), this);
-        Objects.requireNonNull(getCommand("jotd")).setExecutor(new MainCmd());
-        Objects.requireNonNull(getCommand("jotd")).setTabCompleter(new MainTab());
+        Objects.requireNonNull(getCommand("jotd")).setExecutor(this);
+        Objects.requireNonNull(getCommand("jotd")).setTabCompleter(this);
 
         if (storage.getCurrentJob() == null) {
             generateNewJotd();
@@ -50,6 +52,81 @@ public final class Main extends JavaPlugin {
 
         activateJotdBoost();
         logger.info(MessageFormat.format("The job of the day is {0} with a {1}% boost.", Main.storage.getCurrentJob(), Main.storage.getCurrentBoost()));
+    }
+
+    @Override
+    public void onDisable() {
+        if (storage.getPreviousJob() != null) Jobs.getJob(storage.getPreviousJob()).setBoost(null);
+        if (storage.getCurrentJob() != null) Jobs.getJob(storage.getCurrentJob()).setBoost(null);
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        boolean hasPermission = sender instanceof ConsoleCommandSender || sender.hasPermission("jotd.admin");
+
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add("current");
+        if (hasPermission) commands.add("generate");
+        commands.add("previous");
+        if (hasPermission) commands.add("reload");
+
+        return commands;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        boolean hasPermission = sender instanceof ConsoleCommandSender || sender.hasPermission("jotd.admin");
+
+        if (args.length == 0) {
+            sender.sendMessage("§e--------------->> §6JOTD Help§e <<---------------");
+            sender.sendMessage("§6/jotd current §fShows the current Job of the Day boost.");
+            if (hasPermission) sender.sendMessage("§6/jotd generate §fGenerate a new random Job of the Day boost.");
+            sender.sendMessage("§6/jotd previous §fShows the previous Job of the Day boost.");
+            if (hasPermission) sender.sendMessage("§6/jotd reload §fReload the Job of the Day plugin.");
+            sender.sendMessage("§e-------------------------------------------");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("current")) {
+            sender.sendMessage(PlaceholderAPI.setPlaceholders(null, Main.config.getCurrentJobMessage()));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("previous")) {
+            if (Main.storage.getPreviousJob() == null) {
+                sender.sendMessage(ChatColor.RED + "Oopsie-daisy, there is no previous Job of the Day yet.");
+                return true;
+            }
+
+            sender.sendMessage(PlaceholderAPI.setPlaceholders(null, Main.config.getPreviousJobMessage()));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("generate")) {
+            if (!hasPermission) {
+                sender.sendMessage(ChatColor.RED + "Oopsie-daisy, you're not allowed to use this.");
+                return true;
+            }
+
+            Main.generateNewJotd();
+            Main.activateJotdBoost();
+            sender.sendMessage(PlaceholderAPI.setPlaceholders(null, Main.config.getCurrentJobMessage()));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!hasPermission) {
+                sender.sendMessage(ChatColor.RED + "Oopsie-daisy, you're not allowed to use this.");
+                return true;
+            }
+
+            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().enablePlugin(this);
+            sender.sendMessage(ChatColor.GREEN + "JOTD was successfully reloaded.");
+            return true;
+        }
+
+        return true;
     }
 
     public static void generateNewJotd() {
@@ -85,11 +162,5 @@ public final class Main extends JavaPlugin {
 
         if (storage.getPreviousJob() != null) Jobs.getJob(storage.getPreviousJob()).setBoost(null);
         if (storage.getCurrentJob() != null) Jobs.getJob(storage.getCurrentJob()).setBoost(boost);
-    }
-
-    @Override
-    public void onDisable() {
-        if (storage.getPreviousJob() != null) Jobs.getJob(storage.getPreviousJob()).setBoost(null);
-        if (storage.getCurrentJob() != null) Jobs.getJob(storage.getCurrentJob()).setBoost(null);
     }
 }
