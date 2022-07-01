@@ -156,9 +156,10 @@ public final class Main extends JavaPlugin {
 
     public static void activateJotdBoost() {
         BoostMultiplier boost = new BoostMultiplier();
-        boost.add(CurrencyType.EXP, (double) storage.getCurrentBoost() / 100);
-        boost.add(CurrencyType.MONEY, (double) storage.getCurrentBoost() / 100);
-        boost.add(CurrencyType.POINTS, (double) storage.getCurrentBoost() / 100);
+
+        if (config.getIsEXPBoosted()) boost.add(CurrencyType.EXP, (double) storage.getCurrentBoost() / 100);
+        if (config.getIsMoneyBoosted()) boost.add(CurrencyType.MONEY, (double) storage.getCurrentBoost() / 100);
+        if (config.getIsPointsBoosted()) boost.add(CurrencyType.POINTS, (double) storage.getCurrentBoost() / 100);
 
         if (storage.getPreviousJob() != null) Jobs.getJob(storage.getPreviousJob()).setBoost(null);
         if (storage.getCurrentJob() != null) Jobs.getJob(storage.getCurrentJob()).setBoost(boost);

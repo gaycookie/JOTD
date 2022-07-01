@@ -33,5 +33,23 @@ This plugin must be used in combination with [Jobs Reborn] and does **not** cycl
 | `%jotd_previous_job%`   | Return the previous Job of the day.              |
 | `%jotd_previous_boost%` | Return the previous boost of the job of the day. |
 
+## Config (default)
+```yml
+show_welcome_message: true
+messages:
+  welcome: "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost."
+  current: "§eThe Job of the Day is §a%jotd_current_job% §ewith a §a%jotd_current_boost%% §eboost."
+  previous: "§eThe previous Job of the Day was §a%jotd_previous_job% §ewith a §a%jotd_previous_boost%% §eboost."
+possible_boosts:
+  exp: true
+  money: true
+  points: true
+boosts_amounts:
+  min: 10
+  max: 50
+excluded_jobs:
+  -
+```
+
 [Jobs Reborn]: https://www.spigotmc.org/resources/jobs-reborn.4216/
 [PlaceholderAPI]: https://www.spigotmc.org/resources/placeholderapi.6245/

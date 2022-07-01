@@ -47,6 +47,18 @@ public class Config {
         return configYml.getString("messages.previous", "§eThe previous Job of the Day was §a%jotd_previous_job% §ewith a §a%jotd_previous_job%% §eboost.");
     }
 
+    public boolean getIsEXPBoosted() {
+        return configYml.getBoolean("possible_boosts.exp", true);
+    }
+
+    public boolean getIsMoneyBoosted() {
+        return configYml.getBoolean("possible_boosts.money", true);
+    }
+
+    public boolean getIsPointsBoosted() {
+        return configYml.getBoolean("possible_boosts.points", true);
+    }
+
     public int getBoostsAmountMix() {
         return configYml.getInt("boosts_amounts.min", 10);
     }

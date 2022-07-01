@@ -14,10 +14,6 @@ permissions:
     description: Administration permission for Jotd.
     default: op
 
-  jotd.user:
-    description: User permission for Jotd (default).
-    default: true
-
 commands:
   jotd:
     description: Job Of the Day command.
